@@ -51,6 +51,7 @@ return [
     'global_throttle_duration_minutes' => 30,
     'to_email_address' => env('EMAIL_EXCEPTIONS_TO', null),
     'from_email_address' => env('EMAIL_EXCEPTIONS_FROM', env('MAIL_FROM_ADDRESS', null)),
+    'from_name' => env('EMAIL_EXCEPTIONS_FROM_NAME', env('MAIL_FROM_NAME', null)),
     'email_subject' => null,
     'show_environment' => true,
     'show_request' => true,

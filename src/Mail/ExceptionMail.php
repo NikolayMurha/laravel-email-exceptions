@@ -37,7 +37,7 @@ class ExceptionMail extends Mailable
 
         $this->from(
             config('laravel_email_exceptions.from_email_address'),
-            config('laravel_email_exceptions.fromName')
+            config('laravel_email_exceptions.from_name')
         );
         $this->to(config('laravel_email_exceptions.to_email_address'));
 
