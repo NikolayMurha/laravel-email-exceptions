@@ -4,9 +4,9 @@ return [
     /**
      * Configure the ErrorEmail service
      *
-     * - email (bool) - Enable or disable emailing of errors/exceptions
+     * - enabled (bool) - Enable or disable emailing of errors/exceptions
      *
-     * - dont_email (array) - An array of classes that should never be emailed
+     * - exclude (array) - An array of classes that should never be emailed
      *   even if they are thrown Ex: ['']
      *
      * - throttle (bool) - Enable or disable throttling of errors/exceptions
@@ -40,18 +40,19 @@ return [
      *   Default Subject: An Exception has been thrown on APP_URL APP_ENV
      *
      */
-    'error_email' => [
-        'enabled' => env('EMAIL_EXCEPTIONS_ENABLED', true),
-        'dont_email' => [],
-        'throttle' => env('EMAIL_EXCEPTIONS_THROTTLE', true),
-        'throttle_cache_driver' => env('EMAIL_EXCEPTIONS_CACHE_DRIVER', env('CACHE_DRIVER', 'file')),
-        'throttle_duration_minutes' => 5,
-        'dont_throttle' => [],
-        'global_throttle' => env('EMAIL_EXCEPTIONS_GLOBAL_THROTTLE', true),
-        'global_throttle_limit' => 20,
-        'global_throttle_duration_minutes' => 30,
-        'to_email_address' => env('EMAIL_EXCEPTIONS_TO', null),
-        'from_email_address' => env('EMAIL_EXCEPTIONS_FROM', env('MAIL_FROM_ADDRESS', null)),
-        'email_subject' => null
-    ]
+    'enabled' => env('EMAIL_EXCEPTIONS_ENABLED', true),
+    'exclude' => [],
+    'throttle' => env('EMAIL_EXCEPTIONS_THROTTLE', true),
+    'throttle_cache_driver' => env('EMAIL_EXCEPTIONS_CACHE_DRIVER', env('CACHE_DRIVER', 'file')),
+    'throttle_duration_minutes' => 5,
+    'throttle_exclude' => [],
+    'global_throttle' => env('EMAIL_EXCEPTIONS_GLOBAL_THROTTLE', true),
+    'global_throttle_limit' => 20,
+    'global_throttle_duration_minutes' => 30,
+    'to_email_address' => env('EMAIL_EXCEPTIONS_TO', null),
+    'from_email_address' => env('EMAIL_EXCEPTIONS_FROM', env('MAIL_FROM_ADDRESS', null)),
+    'email_subject' => null,
+    'show_environment' => true,
+    'show_request' => true,
+    'show_previous_exceptions' => true,
 ];
