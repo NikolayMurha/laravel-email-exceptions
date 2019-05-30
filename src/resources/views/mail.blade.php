@@ -1,52 +1,78 @@
-@component('mail::message')
-    @component('mail::panel')
+@extends('laravel-email-exceptions::layout')
+
+@section('content')
+    <div class="panel">
         There has been an exception thrown on {{link_to($appUrl)}}
-    @endcomponent
-    @component('mail::table')
-        |------------------|------------------------------------|
-        | Application      |          {{$appName}}              |
-        |------------------|------------------------------------|
-        | Environment      |          {{$appEnv}}               |
-        |------------------|------------------------------------|
-        | File             |         {{$e->getFile()}}          |
-        |------------------|------------------------------------|
-        | Type             |     {{ get_class($exception) }}    |
-        |------------------|------------------------------------|
-    @endcomponent
+    </div>
+    <table class="summary">
+        <tr>
+            <td>
+                <h2>Application</h2>
+                {{$appName}}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h2>Environment</h2>
+                {{$appEnv}}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h2>File</h2>
+                {{$exception->getFile()}}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h2>Type</h2>
+                {{ get_class($exception) }}
+            </td>
+        </tr>
+    </table>
+
     @include('laravel-email-exceptions::exception', ['exception'=>$exception])
 
     @if($environment)
-        @component('mail::panel')
-            Environment
-        @endcomponent
-        @component('mail::table')
-            |   Variable    |        Value      |
-            |----------------|------------------|
+        <table>
+            <tr>
+                <th colspan="2">Environment</th>
+            </tr>
+            <tr>
+                <th>Variable</th>
+                <th>Value</th>
+            </tr>
             @foreach($environment as $var => $value)
-                |    {{$var}}    |   {{$value}}     |
-                |----------------|------------------|
+                <tr>
+                    <td> {{$var}}</td>
+                    <td>{{$value}} </td>
+                </tr>
             @endforeach
-        @endcomponent
+        </table>
     @endif
 
     @if($request)
-        @component('mail::panel')
-            Request
-        @endcomponent
-        @component('mail::table')
-            |   Variable    |        Value      |
-            |----------------|------------------|
+        <table>
+            <tr>
+                <th colspan="2">Request</th>
+            </tr>
+            <tr>
+                <th>Variable</th>
+                <th>Value</th>
+            </tr>
             @foreach($request as $var => $value)
-                |    {{$var}}    |   {{print_r($value, true)}}  |
-                |----------------|------------------|
+                <tr>
+                    <td> {{$var}}</td>
+                    <td>{{$value}} </td>
+                </tr>
             @endforeach
-        @endcomponent
+        </table>
     @endif
 
-    @if($previousExceptions)
-        @component('mail::panel')
-            Previous exceptions
-        @endcomponent
-        @each('laravel-email-exceptions::exception', $previousExceptions, 'exception')
-    @endif
-@endcomponent
+    {{--    @if($previousExceptions)--}}
+    {{--        @component('mail::panel')--}}
+    {{--            Previous exceptions--}}
+    {{--        @endcomponent--}}
+    {{--        @each('laravel-email-exceptions::exception', $previousExceptions, 'exception')--}}
+    {{--    @endif--}}
+@endsection

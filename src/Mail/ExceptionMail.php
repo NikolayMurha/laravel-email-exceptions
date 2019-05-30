@@ -41,7 +41,7 @@ class ExceptionMail extends Mailable
         );
         $this->to(config('laravel_email_exceptions.to_email_address'));
 
-        return $this->markdown('laravel-email-exceptions::mail')->with([
+        return $this->view('laravel-email-exceptions::mail')->with([
             'appName' => config('app.name'),
             'appEnv' => config('app.env'),
             'appUrl' => Request::fullUrl(),
