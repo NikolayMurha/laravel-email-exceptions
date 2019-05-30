@@ -55,4 +55,5 @@ return [
     'show_environment' => true,
     'show_request' => true,
     'show_previous_exceptions' => true,
+    'disable_on_debug' => true,
 ];

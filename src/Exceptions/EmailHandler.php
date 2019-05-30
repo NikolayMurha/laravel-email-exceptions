@@ -30,12 +30,10 @@ class EmailHandler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
-        if (!config('app.debug')) {
-            // check if we should mail this exception
-            if ($this->shouldMail($exception)) {
-                // if we passed our validation lets mail the exception
-                $this->sendExceptionMail($exception);
-            }
+        // check if we should mail this exception
+        if ($this->shouldMail($exception)) {
+            // if we passed our validation lets mail the exception
+            $this->sendExceptionMail($exception);
         }
         // run the parent report (logs exception and all that good stuff)
         $this->callParentReport($exception);
@@ -62,25 +60,34 @@ class EmailHandler extends ExceptionHandler
      */
     protected function shouldMail(Exception $exception)
     {
-        // if emailing is turned off in the config
-        if (config('laravel_email_exceptions.enabled') != true ||
-            // if we dont have an email address to mail to
-            !config('laravel_email_exceptions.to_email_address') ||
-            // if we dont have an email address to mail from
-            !config('laravel_email_exceptions.from_email_address') ||
-            $this->shouldntReport($exception) ||
-            // if the exception is in the don't mail list
-            $this->isInDontEmailList($exception) ||
-            // if there is any app specific don't email logic
-            $this->appSpecificDontEmail($exception) ||
-            // if the exception has already been mailed within the last throttle period
-            $this->throttle($exception) ||
-            // if we've already sent the maximum amount of emails for the global throttle period
-            $this->globalThrottle()
-        ) {
-            // we should not mail this exception
+        if (!config('laravel_email_exceptions.enabled')) {
             return false;
         }
+
+        if (config('app.debug') and config('laravel_email_exceptions.disable_on_debug')) {
+            return false;
+        }
+
+        if (!config('laravel_email_exceptions.to_email_address') || !config('laravel_email_exceptions.from_email_address')) {
+            return false;
+        }
+
+        if ($this->skipException($exception)) {
+            return false;
+        }
+
+        if ($this->shouldntReport($exception)) {
+            return false;
+        }
+
+        if ($this->isExcluded($exception)) {
+            return false;
+        }
+
+        if ($this->throttle($exception) || $this->globalThrottle()) {
+            return false;
+        }
+
         // we made it past all the possible reasons to not email so we should mail this exception
         return true;
     }
@@ -92,7 +99,7 @@ class EmailHandler extends ExceptionHandler
      * @return boolean
      *
      */
-    protected function appSpecificDontEmail(Exception $exception)
+    protected function skipException(Exception $exception)
     {
         // override this in app/Exceptions/Handler.php if you need more complicated logic
         // then checking instanceof with exception classes
@@ -156,7 +163,7 @@ class EmailHandler extends ExceptionHandler
     {
         // if throttling is turned off or its in the dont throttle list we won't throttle this exception
         if (config('laravel_email_exceptions.throttle') == false ||
-            $this->isInDontThrottleList($exception)
+            $this->isThrottleExcluded($exception)
         ) {
             // report that we do not need to throttle
             return false;
@@ -228,7 +235,7 @@ class EmailHandler extends ExceptionHandler
      * @param Exception $exception
      * @return boolean
      */
-    protected function isInDontThrottleList(Exception $exception)
+    protected function isThrottleExcluded(Exception $exception)
     {
         $dontThrottleList = config('laravel_email_exceptions.throttle_exclude');
         return $this->isInList($dontThrottleList, $exception);
@@ -240,7 +247,7 @@ class EmailHandler extends ExceptionHandler
      * @param Exception $exception
      * @return boolean
      */
-    protected function isInDontEmailList(Exception $exception)
+    protected function isExcluded(Exception $exception)
     {
         $dontEmailList = config('laravel_email_exceptions.exclude');
         return $this->isInList($dontEmailList, $exception);
