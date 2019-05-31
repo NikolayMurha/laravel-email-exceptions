@@ -4,75 +4,31 @@
     <div class="panel">
         There has been an exception thrown on {{link_to($appUrl)}}
     </div>
-    <table class="summary">
+    <table class="table mb-4">
         <tr>
-            <td>
-                <h2>Application</h2>
-                {{$appName}}
-            </td>
+            <th>Application</th>
+            <td>{{$appName}}</td>
         </tr>
         <tr>
-            <td>
-                <h2>Environment</h2>
-                {{$appEnv}}
-            </td>
+            <th>Environment</th>
+            <td>{{$appEnv}}</td>
         </tr>
         <tr>
-            <td>
-                <h2>File</h2>
-                {{$exception->getFile()}}
-            </td>
+            <th>File</th>
+            <td>{{$exception->getFile()}}</td>
         </tr>
         <tr>
-            <td>
-                <h2>Type</h2>
-                {{ get_class($exception) }}
-            </td>
+            <th>Type</th>
+            <td>{{ get_class($exception) }}</td>
         </tr>
     </table>
 
-    @include('laravel-email-exceptions::exception', ['exception'=>$exception])
+    @include('laravel-email-exceptions::exception', ['exception'=>$exception, 'title'=> "Exception"])
+    @include('laravel-email-exceptions::env')
+    @include('laravel-email-exceptions::request')
 
-    @if($environment)
-        <table>
-            <tr>
-                <th colspan="2">Environment</th>
-            </tr>
-            <tr>
-                <th>Variable</th>
-                <th>Value</th>
-            </tr>
-            @foreach($environment as $var => $value)
-                <tr>
-                    <td> {{$var}}</td>
-                    <td>{{$value}} </td>
-                </tr>
-            @endforeach
-        </table>
+    @if($previousExceptions)
+        <div class="panel">Previous exceptions</div>
+        @each('laravel-email-exceptions::exception', $previousExceptions, 'exception')
     @endif
-
-    @if($request)
-        <table>
-            <tr>
-                <th colspan="2">Request</th>
-            </tr>
-            <tr>
-                <th>Variable</th>
-                <th>Value</th>
-            </tr>
-            @foreach($request as $var => $value)
-                <tr>
-                    <td> {{$var}}</td>
-                    <td>{{$value}} </td>
-                </tr>
-            @endforeach
-        </table>
-    @endif
-
-    {{--    @if($previousExceptions)--}}
-    {{--        @component('mail::panel')--}}
-    {{--            Previous exceptions--}}
-    {{--        @endcomponent--}}
-    {{--        @each('laravel-email-exceptions::exception', $previousExceptions, 'exception')--}}
-    {{--    @endif--}}
 @endsection
