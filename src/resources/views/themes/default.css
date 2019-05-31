@@ -29,6 +29,9 @@ h1, h2, h3, h4, p {
     background-color: #FF6259;
     padding: 0.8rem;
     font-weight: bold;
+    text-align: center;
+    color: #ffffff;
+    font-size: 1rem;
 }
 
 .sub-panel {
