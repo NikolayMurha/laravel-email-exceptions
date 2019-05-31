@@ -27,8 +27,8 @@
     @include('laravel-email-exceptions::env')
     @include('laravel-email-exceptions::request')
 
-    @if($allExceptions)
+    @if($previousExceptions)
         <div class="panel">Previous exceptions</div>
-        @each('laravel-email-exceptions::exception', $allExceptions, 'exception')
+        @each('laravel-email-exceptions::exception', $previousExceptions, 'exception')
     @endif
 @endsection
