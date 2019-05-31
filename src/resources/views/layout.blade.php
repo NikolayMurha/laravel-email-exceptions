@@ -83,6 +83,14 @@
             margin-bottom: 1rem;
         }
 
+        .m-0 {
+            margin: 0 !important;
+        }
+
+        .p-0 {
+            padding: 0 !important;
+        }
+
         @media only screen and (max-width: 600px) {
             .inner-body {
                 width: 100% !important;
