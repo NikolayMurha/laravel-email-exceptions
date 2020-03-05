@@ -21,13 +21,13 @@ class EmailExceptionsServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->loadViewsFrom(__DIR__ . '/resources/views', 'laravel-email-exceptions');
-
+        $app = app();
         $this->publishes([
-            __DIR__ . '/config/laravel-email-exceptions.php' => config_path('laravel-email-exceptions.php'),
+            __DIR__ . '/config/laravel-email-exceptions.php' => $app->configPath('laravel-email-exceptions.php'),
         ], 'config');
 
         $this->publishes([
-            __DIR__ . '/resources/views' => resource_path('views/vendor/laravel-email-exceptions'),
+            __DIR__ . '/resources/views' => $app->resourcePath('views/vendor/laravel-email-exceptions')// resource_path('views/vendor/laravel-email-exceptions'),
         ], 'views');
     }
 
