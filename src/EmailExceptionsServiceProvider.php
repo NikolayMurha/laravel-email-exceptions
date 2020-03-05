@@ -23,7 +23,7 @@ class EmailExceptionsServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/resources/views', 'laravel-email-exceptions');
 
         $this->publishes([
-            __DIR__ . '/config/laravel_email_exceptions.php' => config_path('laravel_email_exceptions.php'),
+            __DIR__ . '/config/laravel-email-exceptions.php' => config_path('laravel-email-exceptions.php'),
         ], 'config');
 
         $this->publishes([
@@ -39,7 +39,7 @@ class EmailExceptionsServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__ . '/config/laravel_email_exceptions.php',
+            __DIR__ . '/config/laravel-email-exceptions.php',
             'laravel_email_exceptions'
         );
     }
