@@ -22,8 +22,8 @@
   ],
   "minimum-stability": "stable",
   "require": {
-    "php": ">=7.0",
-    "illuminate/support": "~5.0 || ~6.0 ",
+    "php": ">=5.4.0",
+    "illuminate/support": "^5.0|^6.0",
     "tijsverkoyen/css-to-inline-styles": "^2.2.1"
   },
   "require-dev": {
