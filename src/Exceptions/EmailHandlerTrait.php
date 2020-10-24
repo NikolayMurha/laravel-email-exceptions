@@ -59,15 +59,15 @@ trait EmailHandlerTrait
      */
     protected function shouldMail(Exception $exception)
     {
-        if (!config('laravel_email_exceptions.enabled')) {
+        if (!config('laravel-email-exceptions.enabled')) {
             return false;
         }
 
-        if (config('app.debug') and config('laravel_email_exceptions.disable_on_debug')) {
+        if (config('app.debug') and config('laravel-email-exceptions.disable_on_debug')) {
             return false;
         }
 
-        if (!config('laravel_email_exceptions.to_email_address') || !config('laravel_email_exceptions.from_email_address')) {
+        if (!config('laravel-email-exceptions.to_email_address') || !config('laravel-email-exceptions.from_email_address')) {
             return false;
         }
 
@@ -126,7 +126,7 @@ trait EmailHandlerTrait
     protected function globalThrottle()
     {
         // check if global throttling is turned on
-        if (config('laravel_email_exceptions.global_throttle') == false) {
+        if (config('laravel-email-exceptions.global_throttle') == false) {
             // no need to throttle since global throttling has been disabled
             return false;
         } else {
@@ -134,7 +134,7 @@ trait EmailHandlerTrait
             if ($this->cache()->has($this->globalThrottleCacheKey)
             ) {
                 // if we are over the limit return true since this should be throttled
-                if ($this->cache()->get($this->globalThrottleCacheKey, 0) >= config('laravel_email_exceptions.global_throttle_limit')
+                if ($this->cache()->get($this->globalThrottleCacheKey, 0) >= config('laravel-email-exceptions.global_throttle_limit')
                 ) {
                     return true;
                 } else {
@@ -144,7 +144,7 @@ trait EmailHandlerTrait
                 }
             } else {
                 // we didn't find an item in cache lets put it in the cache
-                $this->cache()->put($this->globalThrottleCacheKey, 1, config('laravel_email_exceptions.global_throttle_duration_minutes')
+                $this->cache()->put($this->globalThrottleCacheKey, 1, config('laravel-email-exceptions.global_throttle_duration_minutes')
                 );
                 // if we're just making the cache key now we are not global throttling yet
                 return false;
@@ -161,7 +161,7 @@ trait EmailHandlerTrait
     protected function throttle(Exception $exception)
     {
         // if throttling is turned off or its in the dont throttle list we won't throttle this exception
-        if (config('laravel_email_exceptions.throttle') == false ||
+        if (config('laravel-email-exceptions.throttle') == false ||
             $this->isThrottleExcluded($exception)
         ) {
             // report that we do not need to throttle
@@ -175,7 +175,7 @@ trait EmailHandlerTrait
             } else {
                 // its not in the cache lets add it to the cache
                 $this->cache()->put($this->getThrottleCacheKey($exception), true,
-                    config('laravel_email_exceptions.throttle_duration_minutes')
+                    config('laravel-email-exceptions.throttle_duration_minutes')
                 );
                 // report that we do not need to throttle as its not been reported within the last throttle period
                 return false;
@@ -236,7 +236,7 @@ trait EmailHandlerTrait
      */
     protected function isThrottleExcluded(Exception $exception)
     {
-        $dontThrottleList = config('laravel_email_exceptions.throttle_exclude');
+        $dontThrottleList = config('laravel-email-exceptions.throttle_exclude');
         return $this->isInList($dontThrottleList, $exception);
     }
 
@@ -248,7 +248,7 @@ trait EmailHandlerTrait
      */
     protected function isExcluded(Exception $exception)
     {
-        $dontEmailList = config('laravel_email_exceptions.exclude');
+        $dontEmailList = config('laravel-email-exceptions.exclude');
         return $this->isInList($dontEmailList, $exception);
     }
 
@@ -257,6 +257,6 @@ trait EmailHandlerTrait
      */
     protected function cache()
     {
-        return Cache::store(config('laravel_email_exceptions.throttle_cache_driver'));
+        return Cache::store(config('laravel-email-exceptions.throttle_cache_driver'));
     }
 }

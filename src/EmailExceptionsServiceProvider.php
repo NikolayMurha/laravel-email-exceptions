@@ -40,7 +40,7 @@ class EmailExceptionsServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(
             __DIR__ . '/config/laravel-email-exceptions.php',
-            'laravel_email_exceptions'
+            'laravel-email-exceptions'
         );
     }
 }

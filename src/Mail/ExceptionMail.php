@@ -43,13 +43,13 @@ class ExceptionMail extends Mailable
     public function build()
     {
         $default = sprintf("An Exception has been thrown on %s (%s)", config('app.name', 'unknown'), config('app.env', 'unknown'));
-        $this->subject(config('laravel_email_exceptions.email_subject', $default));
+        $this->subject(config('laravel-email-exceptions.email_subject', $default));
 
         $this->from(
-            config('laravel_email_exceptions.from_email_address'),
-            config('laravel_email_exceptions.from_name')
+            config('laravel-email-exceptions.from_email_address'),
+            config('laravel-email-exceptions.from_name')
         );
-        $this->to(config('laravel_email_exceptions.to_email_address'));
+        $this->to(config('laravel-email-exceptions.to_email_address'));
 
         $this->view('laravel-email-exceptions::mail')->with([
             'appName' => config('app.name'),
@@ -57,8 +57,8 @@ class ExceptionMail extends Mailable
             'appUrl' => Request::fullUrl(),
             'allExceptions' => array_merge([$this->exception], $this->getPreviousExceptions()),
             'exception' => $this->exception,
-            'environment' => config('laravel_email_exceptions.show_environment'),
-            'request' => config('laravel_email_exceptions.show_request'),
+            'environment' => config('laravel-email-exceptions.show_environment'),
+            'request' => config('laravel-email-exceptions.show_request'),
             'previousExceptions' => $this->getPreviousExceptions()
         ]);
 
@@ -79,7 +79,7 @@ class ExceptionMail extends Mailable
      */
     protected function getPreviousExceptions()
     {
-        if (!config('laravel_email_exceptions.show_previous_exceptions')) {
+        if (!config('laravel-email-exceptions.show_previous_exceptions')) {
             return [];
         }
         $previousExceptions = [];
@@ -94,7 +94,7 @@ class ExceptionMail extends Mailable
 
     protected function getRequest()
     {
-        if (!config('laravel_email_exceptions.show_request')) {
+        if (!config('laravel-email-exceptions.show_request')) {
             return [];
         }
         return array_merge(Request::all(), (array)Request::header());
@@ -102,7 +102,7 @@ class ExceptionMail extends Mailable
 
     protected function getEnv()
     {
-        if (!config('laravel_email_exceptions.show_environment')) {
+        if (!config('laravel-email-exceptions.show_environment')) {
             return [];
         }
         return getenv();
